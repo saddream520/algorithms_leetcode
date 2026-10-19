@@ -7,21 +7,29 @@ class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
         //不改变顺序
-        int save = 0;
-        int count = 1;
-        int n = nums.size();
-        vector<int>temp_count(n,0);
-        for(int i =0;i<nums.size();i++)
+          int n = nums.size();
+        vector<int>dp(n,1);
+        int result = 0;
+        // dp.reserve(n);
+        for (int i = 0; i <nums.size(); i++)
         {
-            save = nums[i];
-            for(int j = i+1;j<nums.size();j++)
+            for (int j = 0; j <i; j++)
             {
-                if(nums[j]>save){count++;}
+                if (nums[i] > nums[j])
+                {
+                    dp[i] = max(dp[i],dp[j]+1);
+                }
             }
-            temp_count.push_back(count);
-            count = 0;
+             result = max(result,dp[i]);
         }
-        sort(temp_count.begin(),temp_count.end());
-        return temp_count[n-1];
+        return result;
     }
 };
+int main()
+{
+    Solution s;
+    vector<int>nums = {10,9,2,5,3,7,101,18};
+    int temp = s.lengthOfLIS(nums);
+    cout<<temp<<endl;
+    return 0;
+}
